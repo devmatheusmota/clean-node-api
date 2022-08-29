@@ -19,5 +19,9 @@
 	"homepage": "https://github.com/devmatheusmota/clean-node-api#readme",
 	"devDependencies": {
 		"jest": "^29.0.1"
+	},
+	"dependencies": {
+		"express": "^4.18.1",
+		"mongoose": "^6.5.3"
 	}
 }
