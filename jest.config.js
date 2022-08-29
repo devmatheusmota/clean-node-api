@@ -1,6 +1,6 @@
 module.exports = {
 	collectCoverage: true,
 	coverageDirectory: 'coverage',
-	testEnviroment: 'node',
+	testEnvironment: 'node',
 	coverageProvider: 'v8',
 };
