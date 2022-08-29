@@ -1,23 +1,23 @@
 {
-  "name": "clean-node-api",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/devmatheusmota/clean-node-api.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/devmatheusmota/clean-node-api/issues"
-  },
-  "homepage": "https://github.com/devmatheusmota/clean-node-api#readme",
-  "devDependencies": {
-    "standard": "^17.0.0"
-  }
+	"name": "clean-node-api",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/devmatheusmota/clean-node-api.git"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/devmatheusmota/clean-node-api/issues"
+	},
+	"homepage": "https://github.com/devmatheusmota/clean-node-api#readme",
+	"devDependencies": {
+		"jest": "^29.0.1"
+	}
 }
