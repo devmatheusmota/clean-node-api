@@ -200,8 +200,8 @@ describe('Login Router', () => {
 
 	test(`Should return 500 if EmailValidator has no isValid method`, async () => {
 		const authUseCaseSpy = makeAuthUseCase();
-		const emailValidator = {};
-		const sut = new LoginRouter(authUseCaseSpy, emailValidator);
+		const emailValidatorSpy = {};
+		const sut = new LoginRouter(authUseCaseSpy, emailValidatorSpy);
 		const httpRequest = {
 			body: {
 				email: 'any_email@email.com',
