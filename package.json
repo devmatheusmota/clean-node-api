@@ -4,7 +4,7 @@
 	"description": "",
 	"main": "index.js",
 	"scripts": {
-		"test": "jest --watchAll --silent "
+		"test": "jest --watchAll --silent --no-coverage"
 	},
 	"repository": {
 		"type": "git",
