@@ -1,5 +1,4 @@
 const HttpResponse = require('../helpers/http-response');
-const fs = require('fs');
 const MissingParamError = require('../helpers/missing-param-error');
 const InvalidParamError = require('../helpers/invalid-param-error');
 
@@ -28,10 +27,6 @@ module.exports = class LoginRouter {
 			}
 			return HttpResponse.ok({ accessToken });
 		} catch (error) {
-			const date = new Date();
-			fs.appendFile('error-log.txt', `${date} ${error}\n`, (err) => {
-				if (err) throw err;
-			});
 			return HttpResponse.serverError();
 		}
 	}
