@@ -4,7 +4,9 @@
 	"description": "",
 	"main": "index.js",
 	"scripts": {
-		"test": "jest --watchAll --silent"
+		"test": "jest --silent --colors --noStackTrace --passWithNoTests",
+		"test:unit": "npm test -- --watchAll --config jest-unit-config.js",
+		"test:integration": "npm test -- --watchAll --config jest-integration-config.js"
 	},
 	"repository": {
 		"type": "git",
