@@ -2,6 +2,7 @@ import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
 	test: {
-		includeSource: ['**/*.js'],
+		includeSource: ['**/*{test,spec}.{js}'],
+		watchExclude: ['**/node_modules/**'],
 	},
 });
