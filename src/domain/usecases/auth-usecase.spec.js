@@ -16,4 +16,17 @@ describe('Auth UseCase', () => {
 
 		expect(promise).rejects.toThrow(new MissingParamError('password'));
 	});
+
+	it('Should call LoadUserByEmailRepository with correct email', async () => {
+		class LoadUserByEmailRepositorySpy {
+			async load(email) {
+				this.email = email;
+			}
+		}
+		const loadUserByEmailRepositorySpy = new LoadUserByEmailRepositorySpy();
+		const sut = new AuthUseCase(loadUserByEmailRepositorySpy);
+		await sut.auth('any_email@email.com', 'any_password');
+
+		expect(loadUserByEmailRepositorySpy.email).toBe('any_email@email.com');
+	});
 });
