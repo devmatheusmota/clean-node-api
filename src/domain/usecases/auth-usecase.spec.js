@@ -74,20 +74,34 @@ const makeloadUserByEmailRepositoryWithError = () => {
 	return new LoadUserByEmailRepositorySpy();
 };
 
+const makeUpdateAcessTokenRepository = () => {
+	class UpdateAcessTokenRepositorySpy {
+		async update(userId, acessToken) {
+			this.userId = userId;
+			this.acessToken = acessToken;
+		}
+	}
+
+	return new UpdateAcessTokenRepositorySpy();
+};
+
 const makeSut = () => {
 	const encrypterSpy = makeEncrypter();
 	const loadUserByEmailRepositorySpy = makeloadUserByEmailRepository();
 	const tokenGeneratorSpy = makeTokenGenerator();
+	const updateAcessTokenRepositorySpy = makeUpdateAcessTokenRepository();
 	const sut = new AuthUseCase({
 		loadUserByEmailRepository: loadUserByEmailRepositorySpy,
 		encrypter: encrypterSpy,
 		tokenGenerator: tokenGeneratorSpy,
+		updateAcessTokenRepository: updateAcessTokenRepositorySpy,
 	});
 	return {
 		sut,
 		loadUserByEmailRepositorySpy,
 		encrypterSpy,
 		tokenGeneratorSpy,
+		updateAcessTokenRepositorySpy,
 	};
 };
 
@@ -162,6 +176,23 @@ describe('Auth UseCase', () => {
 
 		expect(acessToken).toBe(tokenGeneratorSpy.acessToken);
 		expect(acessToken).toBeTruthy();
+	});
+
+	it('Should call UpdateAcessTokenRepository with correct values', async () => {
+		const {
+			sut,
+			loadUserByEmailRepositorySpy,
+			updateAcessTokenRepositorySpy,
+			tokenGeneratorSpy,
+		} = makeSut();
+
+		await sut.auth('valid_email@email.com', 'valid_password');
+		expect(updateAcessTokenRepositorySpy.userId).toBe(
+			loadUserByEmailRepositorySpy.user.id
+		);
+		expect(updateAcessTokenRepositorySpy.acessToken).toBe(
+			tokenGeneratorSpy.acessToken
+		);
 	});
 
 	it('Should throw if invalid dependencies are provided', async () => {
