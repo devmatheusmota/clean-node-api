@@ -1,5 +1,6 @@
 const { MissingParamError } = require('../../utils/errors');
 const AuthUseCase = require('./auth-usecase');
+import { describe, expect, test } from 'vitest';
 
 describe('Auth UseCase', () => {
 	test('Should throw if no email is provided', async () => {

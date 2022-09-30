@@ -2,6 +2,8 @@ const LoginRouter = require('./login-router');
 const { UnauthorizedError, ServerError } = require('../errors');
 const { MissingParamError, InvalidParamError } = require('../../utils/errors');
 
+import { describe, expect, test } from 'vitest';
+
 const makeSut = () => {
 	const authUseCaseSpy = makeAuthUseCase();
 	const emailValidatorSpy = makeEmailValidator();
