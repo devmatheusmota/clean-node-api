@@ -140,4 +140,16 @@ describe('Auth UseCase', () => {
 
 		expect(tokenGeneratorSpy.userId).toBe(loadUserByEmailRepositorySpy.user.id);
 	});
+
+	it('Should return an acessToken if correct credentials are provided', async () => {
+		const { sut, tokenGeneratorSpy } = makeSut();
+
+		const acessToken = await sut.auth(
+			'valid_email@email.com',
+			'valid_password'
+		);
+
+		expect(acessToken).toBe(tokenGeneratorSpy.acessToken);
+		expect(acessToken).toBeTruthy();
+	});
 });
