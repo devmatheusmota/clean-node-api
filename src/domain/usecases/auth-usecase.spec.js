@@ -1,15 +1,16 @@
 const { MissingParamError } = require('../../utils/errors');
 const AuthUseCase = require('./auth-usecase');
-import { describe, expect, test } from 'vitest';
+import { describe, expect, it } from 'vitest';
 
 describe('Auth UseCase', () => {
-	test('Should throw if no email is provided', async () => {
+	it('Should throw if no email is provided', async () => {
 		const sut = new AuthUseCase();
 		const promise = sut.auth();
 
 		expect(promise).rejects.toThrow(new MissingParamError('email'));
 	});
-	test('Should throw if no password is provided', async () => {
+
+	it('Should throw if no password is provided', async () => {
 		const sut = new AuthUseCase();
 		const promise = sut.auth('any_email@email.com');
 
