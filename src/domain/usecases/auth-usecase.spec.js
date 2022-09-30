@@ -55,4 +55,14 @@ describe('Auth UseCase', () => {
 			new InvalidParamError('loadUserByEmailRepository')
 		);
 	});
+
+	it('Should return null if LoadUserByEmailRepository returns null', async () => {
+		const { sut } = makeSut();
+		const acessToken = await sut.auth(
+			'invalid_email@email.com',
+			'any_password'
+		);
+
+		expect(acessToken).toBeNull();
+	});
 });
