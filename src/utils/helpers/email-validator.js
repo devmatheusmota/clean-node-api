@@ -1,4 +1,3 @@
-const e = require('express');
 const validator = require('validator');
 
 module.exports = class EmailValidator {
