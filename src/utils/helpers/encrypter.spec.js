@@ -1,9 +1,13 @@
-import { it, describe, expect, vi, beforeEach, afterEach } from 'vitest';
+import { it, describe, expect } from 'vitest';
+
 const bcrypt = require('bcrypt');
 
 class Encrypter {
-	async compare(value, hash) {
-		const isValid = await bcrypt.compare(value, hash);
+	async compare(value, hashed_value) {
+		this.value = value;
+		this.hash = hashed_value;
+
+		const isValid = bcrypt.compare(this.value, this.hash);
 
 		return isValid;
 	}
@@ -22,5 +26,12 @@ describe('Encrypter', () => {
 		const sut = new Encrypter();
 		const isValid = await sut.compare('any_value', 'hashed_value');
 		expect(isValid).toBe(false);
+	});
+
+	it('Should call bcrypt with correct values', async () => {
+		const sut = new Encrypter();
+		await sut.compare('any_value', 'hashed_value');
+		expect(sut.value).toBe('any_value');
+		expect(sut.hash).toBe('hashed_value');
 	});
 });
