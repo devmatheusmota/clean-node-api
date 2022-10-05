@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest';
+import MissingParamError from '../errors/missing-param-error';
 const jwt = require('jsonwebtoken');
 const jwtSpy = require('../../../__mocks__/jsonwebtoken');
 class TokenGenerator {
@@ -6,6 +7,9 @@ class TokenGenerator {
 		this.secret = secret;
 	}
 	async generate(id) {
+		if (!this.secret) {
+			throw new MissingParamError('secret');
+		}
 		this.id = id;
 		return jwt.sign(id, this.secret);
 	}
@@ -36,5 +40,12 @@ describe('Token Generator', () => {
 		jwtSpy.sign('any_id', sut.secret);
 		expect(jwtSpy.id).toBe(sut.id);
 		expect(jwtSpy.secret).toBe(sut.secret);
+	});
+
+	it('Should throw if no secret is provided', async () => {
+		const sut = new TokenGenerator();
+		const promise = sut.generate('any_id');
+		jwtSpy.sign('any_id', sut.secret);
+		expect(promise).rejects.toThrow(new MissingParamError('secret'));
 	});
 });
