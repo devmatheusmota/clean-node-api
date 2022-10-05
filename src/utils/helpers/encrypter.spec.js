@@ -1,18 +1,5 @@
 import { it, describe, expect } from 'vitest';
-
-const bcrypt = require('bcrypt');
-
-class Encrypter {
-	async compare(value, hashed_value) {
-		this.value = value;
-		this.hash = hashed_value;
-
-		const isValid = bcrypt.compare(this.value, this.hash);
-
-		return isValid;
-	}
-}
-
+const Encrypter = require('./encrypter');
 const makeSut = () => {
 	return new Encrypter();
 };
