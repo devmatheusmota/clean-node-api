@@ -1,22 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import MissingParamError from '../errors/missing-param-error';
-const jwt = require('jsonwebtoken');
+import TokenGenerator from './token-generator';
 const jwtSpy = require('../../../__mocks__/jsonwebtoken');
-class TokenGenerator {
-	constructor(secret) {
-		this.secret = secret;
-	}
-	async generate(id) {
-		if (!this.secret) {
-			throw new MissingParamError('secret');
-		}
-		if (!id) {
-			throw new MissingParamError('id');
-		}
-		this.id = id;
-		return jwt.sign(id, this.secret);
-	}
-}
 
 const makeSut = () => {
 	return new TokenGenerator('secret');
