@@ -1,11 +1,18 @@
 const bcrypt = require('bcrypt');
+const MissingParamError = require('../errors/missing-param-error');
 
 class Encrypter {
-	async compare(value, hashed_value) {
+	async compare(value, hash) {
+		if (!value) {
+			throw new MissingParamError('value');
+		}
+		if (!hash) {
+			throw new MissingParamError('hash');
+		}
 		this.value = value;
-		this.hash = hashed_value;
+		this.hash = hash;
 
-		const isValid = bcrypt.compare(this.value, this.hash);
+		const isValid = bcrypt.compare(value, hash);
 
 		return isValid;
 	}

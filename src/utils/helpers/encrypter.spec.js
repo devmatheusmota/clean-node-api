@@ -1,4 +1,6 @@
 import { it, describe, expect } from 'vitest';
+
+const MissingParamError = require('../errors/missing-param-error');
 const Encrypter = require('./encrypter');
 const makeSut = () => {
 	return new Encrypter();
@@ -24,5 +26,13 @@ describe('Encrypter', () => {
 		await sut.compare('any_value', 'hashed_value');
 		expect(sut.value).toBe('any_value');
 		expect(sut.hash).toBe('hashed_value');
+	});
+
+	it('Should throw if no params are provided.', async () => {
+		const sut = makeSut();
+		expect(sut.compare()).rejects.toThrow(new MissingParamError('value'));
+		expect(sut.compare('any_value')).rejects.toThrow(
+			new MissingParamError('hash')
+		);
 	});
 });
