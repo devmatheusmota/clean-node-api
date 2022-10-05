@@ -1,6 +1,8 @@
 import { expect, describe, it, beforeAll, afterAll, beforeEach } from 'vitest';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 const { MongoClient } = require('mongodb');
+
+let client, db, mongod, uri;
 class LoadUserByEmailRepository {
 	constructor(userModel) {
 		this.userModel = userModel;
@@ -12,8 +14,14 @@ class LoadUserByEmailRepository {
 	}
 }
 
+const makeSut = () => {
+	const userModel = db.collection('users');
+	const sut = new LoadUserByEmailRepository(userModel);
+
+	return { userModel, sut };
+};
+
 describe('LoadUserByEmail Repository', async () => {
-	let client, db, mongod, uri;
 	mongod = await MongoMemoryServer.create();
 	uri = mongod.getUri();
 
@@ -32,18 +40,16 @@ describe('LoadUserByEmail Repository', async () => {
 	});
 
 	it('Should return null if no user is found', async () => {
-		const userModel = db.collection('users');
-		const sut = new LoadUserByEmailRepository(userModel);
+		const { sut } = makeSut();
 		const user = await sut.load('invalid_email@email.com');
 		expect(user).toBeNull();
 	});
 
 	it('Should return an user if user is found', async () => {
-		const userModel = db.collection('users');
+		const { sut, userModel } = makeSut();
 		await userModel.insertOne({
 			email: 'valid_email@email.com',
 		});
-		const sut = new LoadUserByEmailRepository(userModel);
 		const user = await sut.load('valid_email@email.com');
 		expect(user.email).toBe('valid_email@email.com');
 	});
