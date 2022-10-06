@@ -1,9 +1,13 @@
 import { expect, describe, it, beforeAll, afterAll, beforeEach } from 'vitest';
-import { MongoMemoryServer } from 'mongodb-memory-server';
-const { MongoClient } = require('mongodb');
+
 const LoadUserByEmailRepository = require('./load-user-by-email-repository');
 
-let client, db, mongod, uri;
+const MongoHelper = require('../helpers/mongo-helper');
+
+const mongoHelper = new MongoHelper();
+
+let uri = await mongoHelper.create();
+let db = await mongoHelper.connect(uri);
 
 const makeSut = () => {
 	const userModel = db.collection('users');
@@ -13,21 +17,13 @@ const makeSut = () => {
 };
 
 describe('LoadUserByEmail Repository', async () => {
-	mongod = await MongoMemoryServer.create();
-	uri = mongod.getUri();
-
-	beforeAll(async () => {
-		client = await MongoClient.connect(uri);
-		db = client.db();
-	});
-
 	beforeEach(async () => {
-		await db.collection('users').deleteMany();
+		db.collection('users').deleteMany();
 	});
 
 	afterAll(async () => {
-		await client.close();
-		await mongod.stop();
+		await mongoHelper.disconnect();
+		await mongoHelper.stop();
 	});
 
 	it('Should return null if no user is found', async () => {
