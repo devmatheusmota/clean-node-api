@@ -17,6 +17,10 @@ const makeSut = () => {
 };
 
 describe('LoadUserByEmail Repository', async () => {
+	beforeAll(async () => {
+		await mongoHelper.create();
+		await mongoHelper.connect(uri);
+	});
 	beforeEach(async () => {
 		db.collection('users').deleteMany();
 	});
@@ -53,5 +57,11 @@ describe('LoadUserByEmail Repository', async () => {
 			_id: fakeUser._id,
 			password: fakeUser.password,
 		});
+	});
+
+	it('Should throw if no usermodel is provided', async () => {
+		const sut = new LoadUserByEmailRepository();
+		const promise = sut.load('any_email@email.com');
+		expect(promise).rejects.toThrow();
 	});
 });
