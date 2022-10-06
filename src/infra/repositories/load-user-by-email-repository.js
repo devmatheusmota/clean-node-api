@@ -1,8 +1,13 @@
+const MissingParamError = require('../../utils/errors/missing-param-error');
+
 class LoadUserByEmailRepository {
 	constructor(userModel) {
 		this.userModel = userModel;
 	}
 	async load(email) {
+		if (!email) {
+			throw new MissingParamError('email');
+		}
 		this.email = email;
 		const user = await this.userModel.findOne(
 			{ email },

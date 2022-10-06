@@ -1,5 +1,7 @@
 import { expect, describe, it, beforeAll, afterAll, beforeEach } from 'vitest';
 
+const MissingParamError = require('../../utils/errors/missing-param-error');
+
 const LoadUserByEmailRepository = require('./load-user-by-email-repository');
 
 const MongoHelper = require('../helpers/mongo-helper');
@@ -63,5 +65,11 @@ describe('LoadUserByEmail Repository', async () => {
 		const sut = new LoadUserByEmailRepository();
 		const promise = sut.load('any_email@email.com');
 		expect(promise).rejects.toThrow();
+	});
+
+	it('Should throw if no email is provided', async () => {
+		const { sut } = makeSut();
+		const promise = sut.load();
+		expect(promise).rejects.toThrow(new MissingParamError('email'));
 	});
 });
