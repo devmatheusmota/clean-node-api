@@ -1,27 +1,14 @@
 import { describe, it, expect, beforeAll, beforeEach, afterAll } from 'vitest';
 import { MissingParamError } from '../../utils/errors';
 
+import UpdateAccessTokenRepository from './update-access-token-repository';
+
 const MongoHelper = require('../helpers/mongo-helper');
 
 const mongoHelper = new MongoHelper();
 
 let uri = await mongoHelper.create();
 let db = await mongoHelper.connect(uri);
-
-class UpdateAccessTokenRepository {
-	constructor(userModel) {
-		this.userModel = userModel;
-	}
-	async update(id, accessToken) {
-		if (!id) {
-			throw new MissingParamError('userId');
-		}
-		if (!accessToken) {
-			throw new MissingParamError('accessToken');
-		}
-		await this.userModel.updateOne({ _id: id }, { $set: { accessToken } });
-	}
-}
 
 const makeSut = () => {
 	const userModel = db.collection('users');
