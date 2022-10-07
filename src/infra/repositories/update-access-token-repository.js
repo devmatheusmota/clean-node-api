@@ -1,4 +1,4 @@
-import { MissingParamError } from '../../utils/errors';
+const MissingParamError = require('../../utils/errors/missing-param-error');
 
 class UpdateAccessTokenRepository {
 	constructor(userModel) {

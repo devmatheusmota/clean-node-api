@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeAll, beforeEach, afterAll } from 'vitest';
-import { MissingParamError } from '../../utils/errors';
+const MissingParamError = require('../../utils/errors/missing-param-error');
 
-import UpdateAccessTokenRepository from './update-access-token-repository';
+const UpdateAccessTokenRepository = require('./update-access-token-repository');
 
 const MongoHelper = require('../helpers/mongo-helper');
 
