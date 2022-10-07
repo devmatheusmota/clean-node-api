@@ -5,6 +5,7 @@
 	"main": "src/main/index.js",
 	"scripts": {
 		"start": "node src/main/index.js",
+		"test": "vitest run",
 		"test:unit": "vitest spec",
 		"test:integration": "vitest test",
 		"test:coverage": "vitest --coverage"
