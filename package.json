@@ -5,7 +5,8 @@
 	"main": "src/main/index.js",
 	"scripts": {
 		"start": "node src/main/index.js",
-		"test": "vitest",
+		"test:unit": "vitest spec",
+		"test:integration": "vitest test",
 		"test:coverage": "vitest --coverage"
 	},
 	"repository": {
@@ -29,6 +30,7 @@
 	"devDependencies": {
 		"@vitest/coverage-c8": "^0.23.4",
 		"mongodb-memory-server": "^8.9.3",
+		"supertest": "^6.3.0",
 		"vitest": "^0.23.4"
 	}
 }
