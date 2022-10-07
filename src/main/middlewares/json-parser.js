@@ -1,3 +1,3 @@
-const express = require('express')
+const express = require('express');
 
-module.exports = express.json()
+module.exports = express.json();
