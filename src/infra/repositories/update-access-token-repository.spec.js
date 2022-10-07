@@ -17,12 +17,22 @@ const makeSut = () => {
 };
 
 describe('UpdateAccessToken Repository', () => {
+	let fakeUserId;
 	beforeAll(async () => {
 		await mongoHelper.create();
 		await mongoHelper.connect(uri);
 	});
 	beforeEach(async () => {
-		db.collection('users').deleteMany();
+		let userModel = db.collection('users');
+		userModel.deleteMany();
+		const fakeUser = await userModel.insertOne({
+			email: 'valid_email@email.com',
+			name: '',
+			age: 25,
+			state: 'any_state',
+			password: 'hashed_password',
+		});
+		fakeUserId = fakeUser.insertedId;
 	});
 
 	afterAll(async () => {
@@ -32,17 +42,10 @@ describe('UpdateAccessToken Repository', () => {
 
 	it('Should update the user with the given accessToken', async () => {
 		const { sut, userModel } = makeSut();
-		const fakeUser = await userModel.insertOne({
-			email: 'valid_email@email.com',
-			name: '',
-			age: 25,
-			state: 'any_state',
-			password: 'hashed_password',
-		});
 
-		await sut.update(fakeUser.insertedId, 'valid_token');
+		await sut.update(fakeUserId, 'valid_token');
 		let updatedFakeUser = await userModel.findOne({
-			email: 'valid_email@email.com',
+			_id: fakeUserId,
 		});
 
 		expect(updatedFakeUser.accessToken).toBe('valid_token');
@@ -50,29 +53,16 @@ describe('UpdateAccessToken Repository', () => {
 
 	it('Should throw if no usermodel is provided', async () => {
 		const sut = new UpdateAccessTokenRepository();
-		const userModel = db.collection('users');
-		const fakeUser = await userModel.insertOne({
-			email: 'valid_email@email.com',
-			name: '',
-			age: 25,
-			state: 'any_state',
-			password: 'hashed_password',
-		});
-		const promise = sut.update(fakeUser.insertedId, 'valid_token');
+
+		const promise = sut.update(fakeUserId, 'valid_token');
 		expect(promise).rejects.toThrow();
 	});
 
 	it('Should throw if no params are provided', async () => {
-		const { sut, userModel } = makeSut();
-		const fakeUser = await userModel.insertOne({
-			email: 'valid_email@email.com',
-			name: '',
-			age: 25,
-			state: 'any_state',
-			password: 'hashed_password',
-		});
+		const { sut } = makeSut();
+
 		expect(sut.update()).rejects.toThrow(new MissingParamError('userId'));
-		expect(sut.update(fakeUser.insertedId)).rejects.toThrow(
+		expect(sut.update(fakeUserId)).rejects.toThrow(
 			new MissingParamError('accessToken')
 		);
 	});
