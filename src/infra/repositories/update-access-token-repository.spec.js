@@ -1,4 +1,5 @@
 import { describe, it, expect, beforeAll, beforeEach, afterAll } from 'vitest';
+import { MissingParamError } from '../../utils/errors';
 
 const MongoHelper = require('../helpers/mongo-helper');
 
@@ -12,6 +13,12 @@ class UpdateAccessTokenRepository {
 		this.userModel = userModel;
 	}
 	async update(id, accessToken) {
+		if (!id) {
+			throw new MissingParamError('userId');
+		}
+		if (!accessToken) {
+			throw new MissingParamError('accessToken');
+		}
 		await this.userModel.updateOne({ _id: id }, { $set: { accessToken } });
 	}
 }
@@ -66,5 +73,20 @@ describe('UpdateAccessToken Repository', () => {
 		});
 		const promise = sut.update(fakeUser.insertedId, 'valid_token');
 		expect(promise).rejects.toThrow();
+	});
+
+	it('Should throw if no params are provided', async () => {
+		const { sut, userModel } = makeSut();
+		const fakeUser = await userModel.insertOne({
+			email: 'valid_email@email.com',
+			name: '',
+			age: 25,
+			state: 'any_state',
+			password: 'hashed_password',
+		});
+		expect(sut.update()).rejects.toThrow(new MissingParamError('userId'));
+		expect(sut.update(fakeUser.insertedId)).rejects.toThrow(
+			new MissingParamError('accessToken')
+		);
 	});
 });
