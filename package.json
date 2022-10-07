@@ -4,7 +4,8 @@
 	"description": "",
 	"main": "index.js",
 	"scripts": {
-		"test": "vitest"
+		"test": "vitest",
+		"test:coverage": "vitest --coverage"
 	},
 	"repository": {
 		"type": "git",
@@ -24,6 +25,7 @@
 		"validator": "^13.7.0"
 	},
 	"devDependencies": {
+		"@vitest/coverage-c8": "^0.23.4",
 		"mongodb-memory-server": "^8.9.3",
 		"vitest": "^0.23.4"
 	}
