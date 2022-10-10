@@ -1,4 +1,5 @@
 const MongoHelper = require('../infra/helpers/mongo-helper');
+const env = require('../main/config/env');
 
 let mongoHelper = new MongoHelper();
 
@@ -8,8 +9,8 @@ mongoHelper.create().then((uri) => {
 		.then(() => {
 			const app = require('./config/app');
 
-			app.listen(3000, () =>
-				console.log('Server running at http://localhost:3000')
+			app.listen(env.port, () =>
+				console.log(`Server running at http://localhost:${env.port}`)
 			);
 		})
 		.catch(console.error);

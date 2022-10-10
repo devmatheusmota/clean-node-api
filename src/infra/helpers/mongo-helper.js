@@ -9,6 +9,7 @@ class MongoHelper {
 	}
 
 	async connect(uri) {
+		this.uri = uri;
 		this.client = await MongoClient.connect(uri);
 		this.db = this.client.db();
 		return this.db;
