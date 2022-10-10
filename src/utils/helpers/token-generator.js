@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-import MissingParamError from '../errors/missing-param-error';
+const MissingParamError = require('../errors/missing-param-error');
 
 class TokenGenerator {
 	constructor(secret) {

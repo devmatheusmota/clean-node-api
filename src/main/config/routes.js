@@ -5,5 +5,4 @@ module.exports = (app) => {
 	fb.sync('**/src/main/routes/**.js').forEach((file) => {
 		require(`../../../${file}`)(router);
 	});
-	// require('../routes/login-routes')(router);
 };
