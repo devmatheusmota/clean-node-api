@@ -1,11 +1,8 @@
 const MongoHelper = require('../infra/helpers/mongo-helper');
 const env = require('../main/config/env');
 
-let mongoHelper = new MongoHelper();
-
-mongoHelper.create().then((uri) => {
-	mongoHelper
-		.connect(uri)
+MongoHelper.create().then((uri) => {
+	MongoHelper.connect(uri)
 		.then(() => {
 			const app = require('./config/app');
 

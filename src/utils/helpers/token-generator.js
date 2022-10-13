@@ -13,7 +13,8 @@ class TokenGenerator {
 			throw new MissingParamError('id');
 		}
 		this.id = id;
-		return jwt.sign(id, this.secret);
+
+		return jwt.sign(id.toString(), this.secret);
 	}
 }
 

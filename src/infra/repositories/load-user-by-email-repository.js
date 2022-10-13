@@ -1,20 +1,13 @@
 const MissingParamError = require('../../utils/errors/missing-param-error');
-const MongoHelper = require('../helpers/mongo-helper');
+const mongoHelper = require('../helpers/mongo-helper');
 
-class LoadUserByEmailRepository extends MongoHelper {
-	constructor(uri) {
-		super();
-		this.uri = uri;
-	}
+class LoadUserByEmailRepository {
 	async load(email) {
 		if (!email) {
 			throw new MissingParamError('email');
 		}
-		this.email = email;
-
-		const db = await this.connect(this.uri);
-
-		const user = await db.collection('users').findOne(
+		const userModel = await mongoHelper.getCollection('users');
+		const user = await userModel.findOne(
 			{ email },
 			{
 				projection: {
@@ -22,6 +15,7 @@ class LoadUserByEmailRepository extends MongoHelper {
 				},
 			}
 		);
+
 		return user;
 	}
 }

@@ -4,24 +4,22 @@ const MissingParamError = require('../../utils/errors/missing-param-error');
 
 const LoadUserByEmailRepository = require('./load-user-by-email-repository');
 
-const MongoHelper = require('../helpers/mongo-helper');
+const mongoHelper = require('../helpers/mongo-helper');
 
-const mongoHelper = new MongoHelper();
-
-let uri = await mongoHelper.create();
-let db = await mongoHelper.connect(uri);
+let userModel;
 
 const makeSut = () => {
-	return new LoadUserByEmailRepository(uri);
+	return new LoadUserByEmailRepository();
 };
 
 describe('LoadUserByEmail Repository', async () => {
 	beforeAll(async () => {
 		await mongoHelper.create();
-		await mongoHelper.connect(uri);
+		await mongoHelper.connect();
+		userModel = await mongoHelper.getCollection('users');
 	});
 	beforeEach(async () => {
-		db.collection('users').deleteMany();
+		await userModel.deleteMany();
 	});
 
 	afterAll(async () => {
@@ -38,7 +36,7 @@ describe('LoadUserByEmail Repository', async () => {
 	it('Should return an user if user is found', async () => {
 		const sut = makeSut();
 		// Creating an user
-		const { insertedId } = await db.collection('users').insertOne({
+		const { insertedId } = await userModel.insertOne({
 			email: 'valid_email@email.com',
 			name: '',
 			age: 25,
@@ -47,7 +45,7 @@ describe('LoadUserByEmail Repository', async () => {
 		});
 
 		// Getting the same user from database
-		const fakeUser = await db.collection('users').findOne({
+		const fakeUser = await userModel.findOne({
 			_id: insertedId,
 		});
 

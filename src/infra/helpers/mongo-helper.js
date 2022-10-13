@@ -1,26 +1,32 @@
 const { MongoMemoryServer } = require('mongodb-memory-server');
 const { MongoClient } = require('mongodb');
 
-class MongoHelper {
+module.exports = {
 	async create() {
-		this.mongod = await MongoMemoryServer.create();
-		this.uri = this.mongod.getUri();
-		return this.uri;
-	}
+		if (!this.mongoServer) {
+			this.mongoServer = await MongoMemoryServer.create();
+		}
+		this.uri = this.mongoServer.getUri();
+	},
 
-	async connect(uri) {
-		this.uri = uri;
-		this.client = await MongoClient.connect(uri);
+	async connect() {
+		if (!this.client) {
+			this.client = await MongoClient.connect(this.uri);
+		}
 		this.db = this.client.db();
-		return this.db;
-	}
+	},
 
 	async disconnect() {
 		await this.client.close();
-	}
+	},
 	async stop() {
-		await this.mongod.stop();
-	}
-}
+		await this.mongoServer.stop();
+	},
 
-module.exports = MongoHelper;
+	async getCollection(name) {
+		if (!this.client) {
+			await this.connect(this.uri);
+		}
+		return this.db.collection(name);
+	},
+};

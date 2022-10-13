@@ -1,4 +1,4 @@
-const { MissingParamError, InvalidParamError } = require('../../utils/errors');
+const { MissingParamError } = require('../../utils/errors');
 const AuthUseCase = require('./auth-usecase');
 import { describe, expect, it } from 'vitest';
 
