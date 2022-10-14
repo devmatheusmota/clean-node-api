@@ -30,4 +30,11 @@ describe('Login Routes', () => {
 			.send({ email: 'valid_email@email.com', password: 'hashed_password' })
 			.expect(200);
 	});
+
+	it('Should return 401 when invalid credentials are provided', async () => {
+		await request(app)
+			.post('/api/login')
+			.send({ email: 'valid_email@email.com', password: 'hashed_password' })
+			.expect(401);
+	});
 });
